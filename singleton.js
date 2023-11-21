@@ -1,0 +1,35 @@
+/* 
+  How to implement Singleton
+  1. Make the constructor private.
+  2. Create a static method who calls the private constructor and save
+  the instance in a static variable.
+*/
+
+class Singleton {
+  static instance = undefined;
+  
+  constructor(version) {
+    this.version = version;
+  }
+
+  /* 2. */
+  static getInstance(version) {
+    if (!Singleton.instance) {
+      Singleton.instance = new Singleton(version);
+    }
+
+    return Singleton.instance;
+  }
+}
+
+function appSingleton() {
+  const singleton1 = Singleton.getInstance('version-1');
+  const singleton2 = Singleton.getInstance('version-2');
+  const singleton3 = Singleton.getInstance('version-3');
+
+  /* singleton 1 y singleton2 estan apuntando al mismo objeto: */
+  console.log(singleton1 === singleton2);
+  console.log(singleton1 === singleton3);
+}
+
+appSingleton();
