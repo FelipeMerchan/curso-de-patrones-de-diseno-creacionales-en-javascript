@@ -9,7 +9,7 @@
  *  - RhinoCar
  *
  * 2. Implement concrete products classes that inherits/implements
- *  base products classes/interfaces, the number of concrete products
+ *  base products classes/interfaces, the number of concrete prodcuts
  *  will depend on the number of families.
  *
  * Concrete products:
@@ -39,41 +39,37 @@
  */
 
 // STEP 1
-class MastodonCar {
-  useGPS() {
-    throw new Error('Method not implemented!');
-  }
+interface MastodonCar {
+  useGPS(): void;
 }
 
-class RhinoCar {
-  useGPS() {
-    throw new Error('Method not implemented!');
-  }
+interface RhinoCar {
+  useGPS(): void;
 }
 
 // STEP 2
-class MastodonSedanCar extends MastodonCar {
+class MastodonSedanCar implements MastodonCar {
   /** @override useGPS() method */
-  useGPS() {
+  useGPS(): void {
     console.log('[SEDAN] Mastodon GPS');
   }
 }
 
-class MastodonHatchbackCar extends MastodonCar {
+class MastodonHatchbackCar implements MastodonCar {
   /** @override useGPS() method */
-  useGPS() {
+  useGPS(): void {
     console.log('[HATCHBACK] Mastodon GPS');
   }
 }
 
-class RhinoSedanCar extends RhinoCar {
+class RhinoSedanCar implements RhinoCar {
   /** @override useGPS() method */
-  useGPS() {
+  useGPS(): void {
     console.log('[SEDAN] Rhino GPS');
   }
 }
 
-class RhinoHatchbackCar extends RhinoCar {
+class RhinoHatchbackCar implements RhinoCar {
   /** @override useGPS() method */
   useGPS() {
     console.log('[HATCHBACK] Rhino GPS');
@@ -81,66 +77,61 @@ class RhinoHatchbackCar extends RhinoCar {
 }
 
 // STEP 3
-class CarAbstractFactory {
-  createMastodon() {
-    throw new Error('Method not implemented!');
-  }
-
-  createRhino() {
-    throw new Error('Method not implemented!');
-  }
+interface CarAbstractFactory {
+  createMastodon(): MastodonCar;
+  createRhino(): RhinoCar;
 }
 
 // STEP 4
-class SedanCarFactory extends CarAbstractFactory {
+class SedanCarFactory implements CarAbstractFactory {
   /**
    * @override createMastodon() method
    * @returns MastodonSedanCar
    */
-  createMastodon() {
+  createMastodon(): MastodonCar {
     return new MastodonSedanCar();
   }
 
-  /**
-   * @override createRhino() method
-   * @returns RhinoSedanCar
-   */
-  createRhino() {
+  createRhino(): RhinoCar {
+    /**
+     * @override createRhino() method
+     * @returns RhinoSedanCar
+     */
     return new RhinoSedanCar();
   }
 }
 
-class HatchbackCarFactory extends CarAbstractFactory {
+class HatchbackCarFactory implements CarAbstractFactory {
   /**
    * @override createMastodon() method
    * @returns MastodonHatchbackCar
    */
-  createMastodon() {
+  createMastodon(): MastodonCar {
     return new MastodonHatchbackCar();
   }
 
-  /**
-   * @override createRhino() method
-   * @returns RhinoHatchbackCar
-   */
-  createRhino() {
+  createRhino(): RhinoCar {
+    /**
+     * @override createMastodon() method
+     * @returns RhinoHatchbackCar
+     */
     return new RhinoHatchbackCar();
   }
 }
 
 /**
  * Main function
- * @param {CarAbstractFactory} factory Car factory
+ * @param factory Car factory
  */
-function appAbstractFactory(factory) {
-  console.log('--- [JS] Calling appAbstractFactory ---\n');
+function appCarFactory(factory: CarAbstractFactory) {
+  console.log('--- [TS] Calling appAbstractFactory ---\n');
   if (!factory) {
     console.log('--- No factory provided ---');
     return;
   }
 
-  const mastodon = factory.createMastodon();
-  const rhino = factory.createRhino();
+  const mastodon: MastodonCar = factory.createMastodon();
+  const rhino: RhinoCar = factory.createRhino();
 
   mastodon.useGPS();
   rhino.useGPS();
@@ -150,21 +141,22 @@ function appAbstractFactory(factory) {
  * You could change the Factory as you wish since
  * all of them implement the same behaviour.
  */
-appAbstractFactory(new HatchbackCarFactory());
-appAbstractFactory(new SedanCarFactory());
+appCarFactory(new HatchbackCarFactory());
+appCarFactory(new SedanCarFactory());
 
+type FactoryType = 'sedan' | 'hatchback';
 /**
- *
- * @param {string} type type of factory family to create
- * @returns {SedanCarFactory | HatchbackCarFactory} A car factory instance
+ * Let's abstract the factories creation
+ * @param type type of factory family to create
+ * @returns A car factory instance
  */
-function createFactory(name) {
+function createFactory(type: FactoryType): CarAbstractFactory {
   const factories = {
     sedan: SedanCarFactory,
     hatchback: HatchbackCarFactory,
   };
 
-  const Factory = factories[name];
+  const Factory = factories[type];
   return new Factory();
 }
 
@@ -173,5 +165,8 @@ function createFactory(name) {
  * factories creation and we just indicate the type
  * as a parameter
  */
-appAbstractFactory(createFactory('hatchback'));
-appAbstractFactory(createFactory('sedan'));
+appCarFactory(createFactory('hatchback'));
+appCarFactory(createFactory('sedan'));
+
+// This is not relevant for the course, don't worry about this
+export {};
