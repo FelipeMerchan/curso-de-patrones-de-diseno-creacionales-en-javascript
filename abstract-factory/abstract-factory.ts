@@ -9,7 +9,7 @@
  *  - RhinoCar
  *
  * 2. Implement concrete products classes that inherits/implements
- *  base products classes/interfaces, the number of concrete prodcuts
+ *  base products classes/interfaces, the number of concrete products
  *  will depend on the number of families.
  *
  * Concrete products:
@@ -28,7 +28,7 @@
  *      * createRhinoCar(): RhinoCar
  *
  * 4. Create concrete factories that implements/inherits from the
- *  abstract factory behaviour and implements all the products creation
+ *  abstract factory behavior and implements all the products creation
  *  methods. The number of concrete factories will depend of the number
  *  of product families.
  *
